@@ -71,6 +71,21 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0 # avoid cache memory
     return response
+##### ruta de registro de usuario #####
+@app.route("/register", methods=['POST'])
+def register():
+    body = request.get_json(silent=True)
+    if body is None:
+        return jsonify('body must be sent'), 400
+    if 'email' not in body:
+        return jsonify('email required'), 400
+    if 'password' not in body:
+        return jsonify('password required'), 400
+
+    new_user = User(email = body['email'], password = body['password'], is_active = True)
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify('Successful registration')
 
 ##### ruta de inicio de sesion #####
 @app.route("/login", methods=["POST"])
@@ -78,13 +93,28 @@ def login():
     body = request.get_json(silent=True)
     if body is None:
         return jsonify('body must be sent'), 400
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
-    if email != "test" or password != "test":
-        return jsonify({"msg": "Bad email or password"}), 401
+    if 'email' not in body:
+        return jsonify('email required'), 400
+    if 'password' not in body:
+        return jsonify('password required'), 400
+
+    user = User.query.filter_by(email=body['email']).first()
+    if user is None:
+        return jsonify('usuario inexistente')
+    if user.password != body['password']:
+        return jsonify('contraseña correcta')
+    
 ##### aqui se crea un token que debe ser guardado en el front-end con localstorage y se utilizara para hacer las peticiones #####
-    access_token = create_access_token(identity=email)
+    access_token = create_access_token(identity=user.email)
     return jsonify(access_token=access_token)
+
+##### ruta privada, acceso restringido #####
+@app.route("/private", methods=['GET'])
+@jwt_required()
+def private():
+    email = get_jwt_identity()
+    return jsonify(email = email)
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
