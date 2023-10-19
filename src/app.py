@@ -7,10 +7,16 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
 from api.utils import APIException, generate_sitemap
-from api.models import db
+from api.models import db, User
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+
+#Importaciones de JWT (JSON WEB TOKEN)
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
 
 #from models import Person
 
@@ -18,6 +24,9 @@ ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+
+app.config["JWT_SECRET_KEY"] = "FLASK_APP_SEC"  
+jwt = JWTManager(app)
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
@@ -63,6 +72,19 @@ def serve_any_other_file(path):
     response.cache_control.max_age = 0 # avoid cache memory
     return response
 
+##### ruta de inicio de sesion #####
+@app.route("/login", methods=["POST"])
+def login():
+    body = request.get_json(silent=True)
+    if body is None:
+        return jsonify('body must be sent'), 400
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+    if email != "test" or password != "test":
+        return jsonify({"msg": "Bad email or password"}), 401
+##### aqui se crea un token que debe ser guardado en el front-end con localstorage y se utilizara para hacer las peticiones #####
+    access_token = create_access_token(identity=email)
+    return jsonify(access_token=access_token)
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
