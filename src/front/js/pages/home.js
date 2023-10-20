@@ -1,20 +1,27 @@
 import React, { useState } from "react";
-import { Context } from "../store/appContext";
 import "../../styles/home.css";
 
 export const Home = () => {
-  const [register, setRegister] = useState({
-    email: '', password: ''
-  })
+  const [register, setRegister] = useState({ email: '', password: '' })
+  const [error, setError] = useState('')
+  const [mensaje, setMensaje] = useState('');
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setRegister({ ...register, [name]: value, });
     console.log("Aqui event", event);
   };
-
+  //La función handleSubmit se encarga de tomar los datos del formulario de registro y los envia al servidor en formato JSON.
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault(); //Previene el comportamiento por defecto del navegador
+
+  //Verifica que los campos esten "email" y "password" esten completos 
+    if (register.email.trim() === '' || register.password.trim() === '') {      //##### Debo ver como mostras el mensaje al campo vacio 
+      setError('All fields are mandatory!');
+      return;
+    }
+  //Envio los datos del formulario a una tabla a traves de un fetch con metodo "post"  
     fetch(process.env.BACKEND_URL + "/register", {
       method: 'POST',
       headers: {
@@ -25,22 +32,50 @@ export const Home = () => {
       .then(resp => resp.json())
       .then(data => {
         console.log(data);
+
+        //Limpia los campos una vez creado el usuario exitosamente, da paso a poder seguir creando registros
+        setRegister({
+          email: '', password: ""
+        });
       });
+    setMensaje('The account was created correctly')      //Aviso de que el usuario fue creado con exito 
   };
+
+  /*const onValidate = (form) =>{
+    let isError = false;
+    let errors = {}
+
+    if(!form.email.trim()){
+      errors.email = 'The email field is mandatory',
+      isError = true
+    }
+    if(!form.password.trim()){
+      errors.password = 'The password field is mandatory',
+      isError = true
+    }
+    return isError ? errors : null
+    
+  }*/
 
   return (
     <div className="container-fluid text-center mt-5">
       <form className="form" onSubmit={handleSubmit}>
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Email</label>
-          <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" value={register.email} onChange={handleChange}/>
-        </div>
-        <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">Password</label>
-          <input type="password" class="form-control" name="password" id="exampleInputPassword1" value={register.password} onChange={handleChange}/>
+          <label for="exampleInputEmail1" class="form-label">Email *</label>
+          <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" value={register.email} onChange={handleChange} />
+
+          {error && <div className="alert alert-danger p-1" role="alert" >{error}</div>}
+
+          <label for="exampleInputPassword1" class="form-label">Password * </label>
+          <input type="password" class="form-control" name="password" id="exampleInputPassword1" value={register.password} onChange={handleChange} />
+
+          {error && <div className="alert alert-danger p-1" role="alert">{error}</div>}
         </div>
         <button type="submit" class="btn-sub btn">Submit</button>
       </form>
+      {mensaje && <div class="alert alert-success p-1" role="alert">
+        {mensaje}
+      </div>}
     </div>
   );
 };
