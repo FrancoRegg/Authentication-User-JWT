@@ -23,16 +23,16 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       getMessage: async () => {
-        try {
-          // fetching data from the backend
-          const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
-          const data = await resp.json()
-          setStore({ message: data.message })
-          // don't forget to return something, that is how the async resolves
-          return data;
-        } catch (error) {
-          console.log("Error loading message from backend", error)
+        const store = getStore()
+        const opts = {
+          headers: {
+            "Authoritation": "Bearer" + store.token
+          }
         }
+        fetch(process.env.BACKEND_URL + "api/hello", opts)
+          .then(resp => resp.json())
+          .then(data => setStore({'msg': data.msg}))
+          .catch(err => console.log("Error", err))
       },
       changeColor: (index, color) => {
         //get the store
@@ -49,6 +49,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         setStore({ demo: demo });
       },
 
+      syncTokenFromSessionStorage: () => {
+        const token = sessionStorage.getItem("token")
+        console.log("Aplication just loaded, synching the session storage token");
+        if(token && token != "" && token != undefined) setStore({token: token})
+      },
 
       login: async (email, password) => {
         const opts = {
@@ -79,8 +84,13 @@ const getState = ({ getStore, getActions, setStore }) => {
         catch(error){
           console.error("There has been an error login in")
         }
-      }
+      },
 
+      logout: () => {
+        sessionStorage.removeItem("token")
+        console.log("Login out");
+        setStore({token: null})
+      },
 
       /*fetchRegister:() => {
         fetch(BACKEND_URL + "/register", 
