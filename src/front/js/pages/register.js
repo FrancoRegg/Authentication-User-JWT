@@ -40,22 +40,6 @@ export const Register = () => {
     setMensaje('The account was created correctly')      //Aviso de que el usuario fue creado con exito 
   };
 
-  /*const onValidate = (form) =>{
-    let isError = false;
-    let errors = {}
-
-    if(!form.email.trim()){
-      errors.email = 'The email field is mandatory',
-      isError = true
-    }
-    if(!form.password.trim()){
-      errors.password = 'The password field is mandatory',
-      isError = true
-    }
-    return isError ? errors : null
-    
-  }*/
-
   return (
     <div className="container-fluid text-center mt-5">
       <form className="form" onSubmit={handleSubmit}>
@@ -70,7 +54,7 @@ export const Register = () => {
 
           {error && <div className="alert alert-danger p-1" role="alert">{error}</div>}
         </div>
-        <button type="submit" class="btn-sub btn">Submit</button>
+        <button type="submit" class="registrate">Submit</button>
       </form>
       {mensaje && <div class="alert alert-success p-1" role="alert">
         {mensaje}
