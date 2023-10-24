@@ -9,13 +9,26 @@ export const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
+  const [error, setError] = useState('');
 
-
-  console.log("this is your token", store.token);
   const handleClick = () => {
-    actions.login(email, password)
-    if (store.token && store.token != "" && store.token != undefined) 
-    navigate("/register") 
+    setError(" ")
+    
+    if(!email){
+      setError("is required")
+      return
+    }
+    if(!password){
+      setError("is required")
+      return
+    }
+    actions.login(email, password);
+    if (store.token && store.token !== "" && store.token !== undefined) {
+      // Redirige a la página de tu elección (por ejemplo, "/dashboard")
+      navigate("/");
+    } else {
+      setError('Credenciales inválidas');
+    }
   }
   return (
     <div className="text-center mt-5">
@@ -26,9 +39,13 @@ export const Login = () => {
         <div class="container-fluid form mb-3">
           <label for="exampleInputEmail1" class="form-label">Email *</label>
           <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  value={email} onChange={(e) => setEmail(e.target.value)} />
-
+          {error && <div className="alert alert-danger p-1" role="alert" >{"Email"+" "+error}</div>}
+          
           <label for="exampleInputPassword1" class="form-label">Password *</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input type="password" class="form-control" id="exampleInputPassword1" value={password} onChange={(e) => setPassword(e.target.value)}/>
+          {error && <div className="alert alert-danger p-1" role="alert" >{"Password"+" "+error}</div>}
+          
+
           <button class="btn btn" onClick={handleClick}>Acceder</button>
         </div>
         <div className="registro-cuenta mb-3" >
