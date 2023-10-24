@@ -15,7 +15,7 @@ export const Register = () => {
   const handleSubmit = (event) => {
     event.preventDefault(); //Previene el comportamiento por defecto del navegador
 
-  //Verifica que los campos esten "email" y "password" esten completos 
+  //Verifica que los campos "email" y "password" esten completos 
     if (register.email.trim() === '' || register.password.trim() === '') {      //##### Debo ver como mostras el mensaje al campo vacio 
       setError('All fields are mandatory!');
       return;

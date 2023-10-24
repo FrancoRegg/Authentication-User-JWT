@@ -29,24 +29,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Authoritation": "Bearer" + store.token
           }
         }
-        fetch(process.env.BACKEND_URL + "api/hello", opts)
+        fetch(process.env.BACKEND_URL + "/private", opts)
           .then(resp => resp.json())
-          .then(data => setStore({'msg': data.msg}))
-          .catch(err => console.log("Error", err))
-      },
-      changeColor: (index, color) => {
-        //get the store
-        const store = getStore();
-
-        //we have to loop the entire demo array to look for the respective index
-        //and change its color
-        const demo = store.demo.map((elm, i) => {
-          if (i === index) elm.background = color;
-          return elm;
-        });
-
-        //reset the global store
-        setStore({ demo: demo });
+          .then(data => setStore({'message': data.message}))
+          .catch(err => console.log("Error loading message from backend", err))
       },
 
       syncTokenFromSessionStorage: () => {
@@ -91,17 +77,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         console.log("Login out");
         setStore({token: null})
       },
-
-      /*fetchRegister:() => {
-        fetch(BACKEND_URL + "/register", 
-        {method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: "", password: "" })
-        })
-        .then(resp => resp.json())
-        .then(data => data)
-        .catch(error => error)
-      }*/
     }
   };
 };
