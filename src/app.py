@@ -25,7 +25,7 @@ static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
-app.config["JWT_SECRET_KEY"] = "FLASK_APP_SEC"  
+app.config["JWT_SECRET_KEY"] = os.environ.get("FLASK_APP_SEC") 
 jwt = JWTManager(app)
 
 # database condiguration
@@ -71,6 +71,8 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0 # avoid cache memory
     return response
+
+
 ##### ruta de registro de usuario #####
 @app.route("/register", methods=['POST'])
 def register():
@@ -88,8 +90,8 @@ def register():
     return jsonify('Successful registration')
 
 ##### ruta de inicio de sesion #####
-@app.route("/login", methods=["POST"])
-def login():
+@app.route("/token", methods=['POST'])
+def create_token():
     body = request.get_json(silent=True)
     if body is None:
         return jsonify('body must be sent'), 400
@@ -102,10 +104,10 @@ def login():
     if user is None:
         return jsonify('usuario inexistente')
     if user.password != body['password']:
-        return jsonify('contraseña correcta')
+        return jsonify('incorrect password')
     
-##### aqui se crea un token que debe ser guardado en el front-end con localstorage y se utilizara para hacer las peticiones #####
-    access_token = create_access_token(identity=user.email)
+    ##### aqui se crea un token que debe ser guardado en el front-end con sessionstorage y se utilizara para hacer las peticiones #####
+    access_token = create_access_token(identity=body['email'])
     return jsonify(access_token=access_token)
 
 ##### ruta privada, acceso restringido #####
@@ -114,9 +116,3 @@ def login():
 def private():
     email = get_jwt_identity()
     return jsonify(email = email)
-
-
-# this only runs if `$ python src/main.py` is executed
-if __name__ == '__main__':
-    PORT = int(os.environ.get('PORT', 3001))
-    app.run(host='0.0.0.0', port=PORT, debug=True)
