@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import "../../styles/home.css";
 import { Context } from "../store/appContext";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 export const Login = () => {
@@ -12,8 +12,6 @@ export const Login = () => {
   const [error, setError] = useState('');
 
   const handleClick = () => {
-    setError(" ")
-    
     if(!email){
       setError("is required")
       return
@@ -23,11 +21,9 @@ export const Login = () => {
       return
     }
     actions.login(email, password);
-    if (store.token && store.token !== "" && store.token !== undefined) {
-      // Redirige a la página de tu elección (por ejemplo, "/dashboard")
-      navigate("/");
-    } else {
-      setError('Credenciales inválidas');
+    if (store.token && store.token !== "" && store.token !== undefined) {}
+    else {
+      setError("Login failed, please try again later");
     }
   }
   return (
