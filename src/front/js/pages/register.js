@@ -11,6 +11,7 @@ export const Register = () => {
     setRegister({ ...register, [name]: value, });
     console.log("Aqui event", event);
   };
+  
   //La función handleSubmit se encarga de tomar los datos del formulario de registro y los envia al servidor en formato JSON.
   const handleSubmit = (event) => {
     event.preventDefault(); //Previene el comportamiento por defecto del navegador
@@ -42,6 +43,9 @@ export const Register = () => {
 
   return (
     <div className="container-fluid text-center mt-5">
+      <div>
+        <h1>Registrate</h1>
+      </div>
       <form className="form" onSubmit={handleSubmit}>
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">Email *</label>
