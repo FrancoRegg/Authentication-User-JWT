@@ -2,7 +2,7 @@
     General Styles used on every website (Don't Repeat Yourself)
 */
 body{
-    background-color: rgb(213, 189, 157);
+    background-color: rgb(213 189 157 / 84%);
 }
 .boton-login{
     border: 2px solid #c1a581;

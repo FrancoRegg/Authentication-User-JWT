@@ -1,7 +1,64 @@
-/*
-    home.css: This website contains selectors only used in home.css
-
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
+.formulario{
+    border: 1px solid green;
+    padding: 20px;
+    display: grid;
+    justify-content: center;
+    width: 50%;
+    height: auto;
+    margin: 18% auto;
+    background: rgb(213, 189, 157);
+}
+.acceso{
+    border: 1px solid red;
+    margin: 10px;
+    font-family: monospace;
+    font-weight: 600;
+    font-size: 30px;
+    text-align: center;
+}
+.form-login{
+    border: 1px solid blue;
+    padding: 10px;
+}
+.acceder{
+    border: none;
+    background-color: darkkhaki;
+    border-radius: 10px;
+    color: black;
+    font-weight: 500;
+    font-size: 17px;
+    text-transform: capitalize;
+    padding: 5px;
+}
+.cont-acceso{
+    display: grid;
+}
+.form-info{
+    width: 100%;
+    margin: 0 auto 10px;
+    border-radius: 10px;
+    border: none;
+    padding: 5px;
+}
+.registro-cuenta{
+    border: 1px solid violet;
+    display: grid;
+    justify-content: center;
+    margin-top: 30px;
+}
+.aviso{
+    border: 1px solid paleturquoise;
+    margin: 0;
+    font-family: monospace;
+    font-size: 15px;
+}
+.registrate{
+    border: none;
+    background-color: darkkhaki;
+    border-radius: 10px;
+    color: black;
+    font-weight: 500;
+    font-size: 17px;
+    text-transform: capitalize;
+    padding: 5px;
+}
