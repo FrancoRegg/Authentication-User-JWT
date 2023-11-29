@@ -5,14 +5,15 @@ import { Context } from "../store/appContext";
 
 export const Private = props => {
   const { store, actions } = useContext(Context);
+  console.log("INFO DE USUARIO",store.datauser);
 
   useEffect(() => {
-    if(store.token && store.token != "" && store.token != undefined) actions.getMessage()
-	}, [store.token])
+    actions.dataUser()
+  }, [])
 
   return (
-    <div className="test">
-      <div className="alert alert-info">{store.message}</div>
+    <div className="info-usuario">
+      <h1>Hola {store.datauser.full_name}</h1>
     </div>
   );
 };
