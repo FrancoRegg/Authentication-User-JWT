@@ -1,0 +1,28 @@
+.info-usuario{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin: 25% auto;
+    width: 60%;
+    height: auto;
+    background-color: darkkhaki;
+    padding: 25px;
+}
+.saludo-privado{
+    text-align: center;
+    font-size: 45px;
+    font-family: fantasy;
+    margin-bottom: 20px;
+}
+.bienvenida-privada{
+    margin: 0;
+    font-size: 20px;
+    font-family: monospace;
+    padding: 5px;
+}
+.despedida-privada{
+    margin: 0;
+    font-size: 20px;
+    font-family: monospace;
+    padding: 5px;
+}
