@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
-
+console.log("NAV",store);
   return (
     <nav className="navbar navbar-light bg-light">
       <div className="container">
         <Link to="/">
-          <span className="navbar-brand mb-0 h1">React Boilerplate</span>
+          <span className="navbar-brand mb-0 h1">vuelve atras</span>
         </Link>
         <div className="ml-auto">
           {!store.token ?
@@ -16,7 +16,9 @@ export const Navbar = () => {
               <button className="btn btn-primary">Log in</button>
             </Link>
             :
-            <button onClick={() => actions.logout()}>log out</button>
+            <Link to="/">
+              <button onClick={() => actions.logout()}>Log out</button>
+            </Link>
           }
 				</div>
       </div>
