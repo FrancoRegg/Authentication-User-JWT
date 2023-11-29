@@ -1,7 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
-      user_login: [''],
+      token: sessionStorage.getItem('token'),
       datauser: [{}]
 
     },
@@ -53,7 +53,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
           sessionStorage.setItem("token", data.access_token); // Guarda el token en el almacenamiento 
 
-          setStore({ user_login: sessionStorage.getItem('token') });
+          setStore({ token: sessionStorage.getItem('token') });
           return data;
         } catch (error) {
           console.error("Error al iniciar sesión:");
