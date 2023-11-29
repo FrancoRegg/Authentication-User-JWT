@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
-from flask import Flask, request, jsonify, url_for, send_from_directory
+from flask import Flask, request, jsonify, url_for, send_from_directory, abort
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
@@ -122,4 +122,16 @@ def create_token():
 @jwt_required()
 def private():
     email = get_jwt_identity()
-    return jsonify(email = email)
+    if email is None:
+        return jsonify('invalid credentials'), 401
+    
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        abort(404, description='User not found')
+    
+    return(user.serialize()), 200
+
+# this only runs if `$ python src/main.py` is executed
+if __name__ == '__main__':
+    PORT = int(os.environ.get('PORT', 3001))
+    app.run(host='0.0.0.0', port=PORT, debug=True)
