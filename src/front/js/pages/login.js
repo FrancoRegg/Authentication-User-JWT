@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import "../../styles/home.css";
+import "../../styles/login.css";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -7,16 +7,31 @@ import { useNavigate } from "react-router-dom";
 export const Login = () => {
   const { store, actions } = useContext(Context)
   const [user, setUser] = useState({ email: "", password: "" })
+  const [error, setError] = useState("")
   const navigate = useNavigate();
 
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault()
+    //Condiciona a que se rellenen los campos
+    if(user.email.trim() === "" || user.password.trim() === ""){
+      setError('Correo electronico y contraseña son obligatorios')
+      return;
+    }
+    
     try { 
       await actions.login(user);
-      navigate("/private")
+
+      if(!store.token){
+        setError('Correo o contraseña incorrectos')
+        setUser({ email: "", password: "" })
+      }else{
+        navigate("/private")
+      }
     }
     catch (error){ 
-      console.error("Error al registrar:", error);
+      setError("Correo o contraseña incorrectos", error);
     }
   }
 
@@ -43,6 +58,7 @@ export const Login = () => {
             onChange={(e) => setUser({ ...user, password: e.target.value })}
           />
           <button class="btn btn">Acceder</button>
+          {error && <p>{error}</p>}
         </form>
       </div>
       <div className="registro-cuenta" >
