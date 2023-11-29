@@ -1,16 +1,23 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 
 export const Register = () => {
   const { store, actions } = useContext(Context)
   const [register, setRegister] = useState({ full_name: '', email: '', password: '' })
-  console.log("REGISTRO", register);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = async(e) =>{
     e.preventDefault();
+    try {
+      // Hacer la solicitud de registro
+      await actions.register(register);
 
-    actions.register(register)
-
+      // Después de un registro exitoso, redirigir a inicio de sesion
+      navigate("/");
+    } catch (error) {
+      console.error("Error al registrar:", error);
+    }
   }
 
   return (
@@ -28,7 +35,7 @@ export const Register = () => {
             aria-describedby="emailHelp" 
             placeholder="Nombre completo" 
             value={register.full_name}
-            onChange={(e)=>setRegister({...register, full_name: e.target.value})}
+            onChange={(e)=>setRegister({...register, full_name:e.target.value})}
           />
           <input 
             type="email" 
@@ -47,7 +54,7 @@ export const Register = () => {
             id="exampleInputPassword1" 
             placeholder="Contraseña" 
             value={register.password}
-            onChange={(e)=>setRegister({register, password:e.target.value})}
+            onChange={(e)=>setRegister({...register, password:e.target.value})}
           />
         </div>
         <button className="registrate">Registrarse</button>
