@@ -109,13 +109,13 @@ def create_token():
 
     user = User.query.filter_by(email=body['email']).first()
     if user is None:
-        return jsonify('usuario inexistente')
+        return jsonify('usuario inexistente'), 404
     if user.password != body['password']:
-        return jsonify('incorrect password')
+        return jsonify('incorrect password'), 404
     
     ##### aqui se crea un token que debe ser guardado en el front-end con sessionstorage y se utilizara para hacer las peticiones #####
     access_token = create_access_token(identity=body['email'])
-    return jsonify(access_token=access_token)
+    return jsonify(access_token=access_token), 200
 
 ##### ruta privada, acceso restringido #####
 @app.route("/private", methods=['GET'])
