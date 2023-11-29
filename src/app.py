@@ -108,10 +108,8 @@ def create_token():
         return jsonify('password required'), 400
 
     user = User.query.filter_by(email=body['email']).first()
-    if user is None:
-        return jsonify('usuario inexistente'), 404
-    if user.password != body['password']:
-        return jsonify('incorrect password'), 404
+    if user is None or user.email != body['email'] or not bcrypt.check_password_hash(user.password, body['password']): #user.password != body['password']: 
+        return jsonify('incorrect email or password'),400
     
     ##### aqui se crea un token que debe ser guardado en el front-end con sessionstorage y se utilizara para hacer las peticiones #####
     access_token = create_access_token(identity=body['email'])
@@ -129,7 +127,7 @@ def private():
     if user is None:
         abort(404, description='User not found')
     
-    return(user.serialize()), 200
+    return('Esta es tu pagina privada'), 200
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
