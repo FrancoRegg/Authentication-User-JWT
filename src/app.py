@@ -127,7 +127,7 @@ def private():
     if user is None:
         abort(404, description='User not found')
     
-    return('Esta es tu pagina privada'), 200
+    return(user.serialize()), 200
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
