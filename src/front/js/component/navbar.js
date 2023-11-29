@@ -3,24 +3,24 @@ import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
-console.log("NAV",store);
+
   return (
     <nav className="navbar navbar-light bg-light">
       <div className="container">
         <Link to="/">
-          <span className="navbar-brand mb-0 h1">vuelve atras</span>
+          <span className="navbar-brand mb-0 h1"></span>
         </Link>
         <div className="ml-auto">
           {!store.token ?
             <Link to="/">
-              <button className="btn btn-primary">Log in</button>
+              <button className="boton-login">inicio sesion</button>
             </Link>
             :
             <Link to="/">
-              <button onClick={() => actions.logout()}>Log out</button>
+              <button className="boton-login" onClick={() => actions.logout()}>cierre sesion</button>
             </Link>
           }
-				</div>
+        </div>
       </div>
     </nav>
   );
