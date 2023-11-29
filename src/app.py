@@ -18,6 +18,8 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 
+from flask_bcrypt import Bcrypt
+
 #from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -28,6 +30,7 @@ app.url_map.strict_slashes = False
 app.config["JWT_SECRET_KEY"] = os.environ.get("FLASK_APP_SEC") 
 jwt = JWTManager(app)
 
+bcrypt = Bcrypt(app)
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
 if db_url is not None:
@@ -79,12 +82,16 @@ def register():
     body = request.get_json(silent=True)
     if body is None:
         return jsonify('body must be sent'), 400
+    if 'full_name' not in body:
+        return jsonify('full_name is required'), 400
     if 'email' not in body:
-        return jsonify('email required'), 400
+        return jsonify('email is required'), 400
     if 'password' not in body:
-        return jsonify('password required'), 400
+        return jsonify('password is required'), 400
 
-    new_user = User(email = body['email'], password = body['password'], is_active = True)
+    pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
+    new_user = User(full_name = body['full_name'], email = body['email'], password = pw_hash, is_active = True)
+
     db.session.add(new_user)
     db.session.commit()
     return jsonify('Successful registration')
