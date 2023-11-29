@@ -2,6 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
       token: null,
+      user_login: ['']
 
     },
     actions: {
@@ -28,43 +29,43 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       },
       //Inicio de sesion
-      login: async (email, password) => {
-        const opts = {
-          method: 'POST',
-          headers: {
-            'Content-type': 'application/json'
-          },
-          body: JSON.stringify({
-            email: email,
-            password: password
-          }),
-        }
-
+      login: async (body) => {
         try {
+          const resp = await fetch(process.env.BACKEND_URL + "/token", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+          });
 
-          const resp = await fetch(process.env.BACKEND_URL + "/token", opts)
-          if (resp.status !== 200) {
-            alert("There has been some error!!")
-            return false;
+          if (!resp.ok) {
+            throw Error("Hubo un problema en la solicitud de inicio de sesión.");
           }
-
-          const data = await resp.json()
-          console.log("This came from the backend", data)
-          sessionStorage.setItem("Token", data.access_token)
-          setStore({ token: data.access_token })
-          return true;
-        }
-        catch (error) {
-          console.error("There has been an error login in")
+          if (resp.status === 401) {
+            throw new Error("Credenciales no válidas");
+          } else if (resp.status === 400) {
+            throw new Error("Correo electrónico o contraseña no válido");
+          }
+          if (!resp.ok) {
+            throw Error("Hubo un problema en la solicitud de inicio de sesión.");
+          }
+          const data = await resp.json();
+          console.log('data fetch', data)
+          
+          sessionStorage.setItem("token", data.access_token); // Guarda el token en el almacenamiento 
+          
+          setStore({ user_login: sessionStorage.getItem('token') });
+          return data;
+        } catch (error) {
+          console.error("Error al iniciar sesión:");
         }
       },
 
-      //Cierre de sesion
-      logout: () => {
-        sessionStorage.removeItem("token")
-        console.log("Login out");
-        setStore({ token: null })
-      },
+//Cierre de sesion
+logout: () => {
+  sessionStorage.removeItem("token")
+  console.log("Login out");
+  setStore({ token: null })
+},
     }
   };
 };
