@@ -1,8 +1,8 @@
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
-      token: null,
-      user_login: ['']
+      user_login: [''],
+      datauser: [{}]
 
     },
     actions: {
@@ -50,9 +50,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
           const data = await resp.json();
           console.log('data fetch', data)
-          
+
           sessionStorage.setItem("token", data.access_token); // Guarda el token en el almacenamiento 
-          
+
           setStore({ user_login: sessionStorage.getItem('token') });
           return data;
         } catch (error) {
@@ -60,12 +60,35 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-//Cierre de sesion
-logout: () => {
-  sessionStorage.removeItem("token")
-  console.log("Login out");
-  setStore({ token: null })
-},
+      // Traer datos del usuario 
+      dataUser: async () => {
+        try {
+          const token = sessionStorage.getItem('token');
+
+          const resp = await fetch(process.env.BACKEND_URL + '/private', {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": 'Bearer ' + token
+            },
+          });
+
+          if (!resp.ok) {
+            throw new Error("Hubo un problema al obtener los datos del usuario.");
+          }
+          const data = await resp.json();
+          setStore({ datauser: data });
+        } catch (error) {
+          console.error("Error al obtener los datos del usuario:", error);
+        }
+      },
+
+      //Cierre de sesion
+      logout: () => {
+        sessionStorage.removeItem("token")
+        console.log("Login out");
+        setStore({ token: null })
+      },
     }
   };
 };
