@@ -18,7 +18,6 @@ export const Login = () => {
     catch (error){ 
       console.error("Error al registrar:", error);
     }
-
   }
 
   return (
