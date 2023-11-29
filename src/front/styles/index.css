@@ -4,73 +4,12 @@
 body{
     background-color: rgb(213, 189, 157);
 }
-h2{
-    color: #002d63;
-}
-.form{
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    width: 30%;
-    margin: auto;
-}
-.form-label{
-    font-size: 15px;
-    font-weight: 600;
-    display: flex;
-    justify-content: start;
-}
-.btn-sub{
-    background-color: rgb(66, 135, 66);
-}
-label{
-    margin-bottom: .3rem;
-    color: #002d63;
-}
-input{
-    margin-bottom: .2rem;
-}
-.btn{
-    background-color: #9fb4ca;
-    border-radius: 15px;
-    color: white;
+.boton-login{
+    border: 2px solid #c1a581;
+    background-color: darkkhaki;
+    border-radius: 10px;
+    color: black;
     font-weight: 500;
-    margin-top: .2em;
-}
-
-.registro-cuenta{
-    width: 30%;
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    margin: auto;
-    text-align: left;
-    font-family: "PT Sans", sans-serif;
-    font-weight: bold;
-    font-size: 16px;
-    height: 100%;
-    background-color: #F3F4F8;
-    margin-top: 38px;
-    height: 209px;
-    border-radius: 8px;
-    padding: 27px;
-}
-p{
-    color: #002E67;
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 19px;
-}
-.registrate{
-    font-size: 0.9em;
-    font-weight: bold;
-    letter-spacing: 1.4px;
-    color: #002d63;
-    background: #F3F4F8;
-    border-radius: 5em;
-    border: 2px solid #002D63;
-    padding: 8px 24px;
-    cursor: pointer;
-    height: max-content;
-    width: 100%;
+    font-size: 17px;
+    text-transform: capitalize;
 }
