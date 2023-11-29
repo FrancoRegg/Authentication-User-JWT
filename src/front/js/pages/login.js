@@ -36,13 +36,13 @@ export const Login = () => {
   }
 
   return (
-    <div className="text-center mt-5">
-      <h2>Accede a tu cuenta</h2>
-      <div class="container-fluid">
+    <div className="container formulario">
+      <h2 className="acceso">Accede a tu cuenta</h2>
+      <div class="container">
         <form className="form-login" onSubmit={handleSubmit}>
           <input
             type="email"
-            class="form-control"
+            className="form-info"
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
             placeholder="Correo electrónico"
@@ -51,23 +51,24 @@ export const Login = () => {
           />
           <input
             type="password"
-            class="form-control"
+            className="form-info"
             id="exampleInputPassword1"
             placeholder="Contraseña"
             value={user.password}
             onChange={(e) => setUser({ ...user, password: e.target.value })}
           />
-          <button class="btn btn">Acceder</button>
-          {error && <p>{error}</p>}
+          <div className="cont-acceso">
+            <button class="acceder">Acceder</button>
+            {error && <p className="errores">{error}</p>}
+          </div>
         </form>
       </div>
       <div className="registro-cuenta" >
-        <p>¿No tienes cuenta aún?</p>
+        <p className="aviso">¿No tienes cuenta aún?</p>
         <Link to="/register">
           <button className="registrate">Registrate aquí</button>
         </Link>
       </div>
-
     </div>
   )
 }
