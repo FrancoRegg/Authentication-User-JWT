@@ -94,7 +94,7 @@ def register():
 
     db.session.add(new_user)
     db.session.commit()
-    return jsonify('Successful registration')
+    return jsonify('Successful registration'), 200
 
 ##### ruta de inicio de sesion #####
 @app.route("/token", methods=['POST'])
