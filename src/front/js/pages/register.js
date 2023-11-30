@@ -8,7 +8,7 @@ export const Register = () => {
   const [register, setRegister] = useState({ full_name: '', email: '', password: '' })
   const navigate = useNavigate();
 
-  const handleSubmit = async(e) =>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       // Hacer la solicitud de registro
@@ -22,44 +22,45 @@ export const Register = () => {
   }
 
   return (
-    <div className="container-fluid">
-      <div>
-        <h1>Registrate</h1>
-      </div>
-      <form className="form" onSubmit={handleSubmit}>
-        <div className="container-inputs">
-          <input 
-            type="text" 
-            className="form-control" 
-            name="full_name" 
-            id="exampleInputEmail1" 
-            aria-describedby="emailHelp" 
-            placeholder="Nombre completo" 
+    <div className="container formulario">
+      <h1 className="registro">Registrate</h1>
+      <div className="container">
+        <form className="form-register" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            className="form-info"
+            name="full_name"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            placeholder="Nombre completo"
             value={register.full_name}
-            onChange={(e)=>setRegister({...register, full_name:e.target.value})}
+            onChange={(e) => setRegister({ ...register, full_name: e.target.value })}
           />
-          <input 
-            type="email" 
-            className="form-control" 
-            name="email" 
-            id="exampleInputEmail1" 
-            aria-describedby="emailHelp" 
-            placeholder="Correo electrónico" 
+          <input
+            type="email"
+            className="form-info"
+            name="email"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            placeholder="Correo electrónico"
             value={register.email}
-            onChange={(e)=>setRegister({...register, email:e.target.value})}
+            onChange={(e) => setRegister({ ...register, email: e.target.value })}
           />
-          <input 
-            type="password" 
-            className="form-control" 
-            name="password" 
-            id="exampleInputPassword1" 
-            placeholder="Contraseña" 
+          <input
+            type="password"
+            className="form-info"
+            name="password"
+            id="exampleInputPassword1"
+            placeholder="Contraseña"
             value={register.password}
-            onChange={(e)=>setRegister({...register, password:e.target.value})}
+            onChange={(e) => setRegister({ ...register, password: e.target.value })}
           />
-        </div>
-        <button className="registrate">Registrarse</button>
-      </form>
+          <div className="cont-registro">
+            <button className="registrate">Registrarse</button>
+          </div>
+        </form>
+      </div>
+
     </div>
   );
 };
