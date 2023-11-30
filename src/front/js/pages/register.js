@@ -4,18 +4,32 @@ import { useNavigate } from "react-router-dom";
 import "../../styles/register.css";
 
 export const Register = () => {
-  const { store, actions } = useContext(Context)
+  const { actions } = useContext(Context)
   const [register, setRegister] = useState({ full_name: '', email: '', password: '' })
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [error, setError] = useState("")
+  const [successMessage, setSuccessMessage] = useState(false)
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (register.password !== confirmPassword) { //Verifica que las contraseñas no sean distintas
+      setError("Las contraseñas no coinciden. Intentelo de nuevo")
+      return;
+    }
     try {
-      // Hacer la solicitud de registro
-      await actions.register(register);
+      
+      await actions.register(register); // Hacer la solicitud de registro
 
-      // Después de un registro exitoso, redirigir a inicio de sesion
-      navigate("/");
+
+      setSuccessMessage(true) //Si las contraseñas coinciden muestra un mensaje y ejecuta el siguiente codigo
+      setTimeout(() => {
+        setSuccessMessage(false)
+        navigate("/"); // Después de un registro exitoso, redirigir a inicio de sesion pasado X tiempo
+      }, 1000);
+
+      setRegister("")
+
     } catch (error) {
       console.error("Error al registrar:", error);
     }
@@ -30,7 +44,7 @@ export const Register = () => {
             type="text"
             className="form-info"
             name="full_name"
-            id="exampleInputEmail1"
+            id="exampleInputName1"
             aria-describedby="emailHelp"
             placeholder="Nombre completo"
             value={register.full_name}
@@ -55,8 +69,19 @@ export const Register = () => {
             value={register.password}
             onChange={(e) => setRegister({ ...register, password: e.target.value })}
           />
+          <input
+            type="password"
+            className="form-info"
+            name="Confirm_password"
+            id="exampleInputPassword2"
+            placeholder="Confirmar contraseña"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
           <div className="cont-registro">
             <button className="registrate">Registrarse</button>
+            {error && <p className="errores">{error}</p>}
+            {successMessage && <p className="exitoso">Tu registro fue exitoso!</p>}
           </div>
         </form>
       </div>
