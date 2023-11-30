@@ -66,7 +66,7 @@ export const Login = () => {
       <div className="registro-cuenta" >
         <p className="aviso">¿No tienes cuenta aún?</p>
         <Link className="redireccion" to="/register">
-          <button className="registrate">Registrate aquí</button>
+          <button className="boton-registrate">Registrate aquí</button>
         </Link>
       </div>
     </div>
