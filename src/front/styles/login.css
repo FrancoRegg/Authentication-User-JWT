@@ -1,5 +1,4 @@
 .formulario{
-    border: 1px solid green;
     padding: 20px;
     display: grid;
     justify-content: center;
@@ -9,7 +8,6 @@
     background: rgb(213, 189, 157);
 }
 .acceso{
-    border: 1px solid red;
     margin: 10px;
     font-family: monospace;
     font-weight: 600;
@@ -17,7 +15,6 @@
     text-align: center;
 }
 .form-login{
-    border: 1px solid blue;
     padding: 10px;
 }
 .acceder{
@@ -33,6 +30,9 @@
 .cont-acceso{
     display: grid;
 }
+.redireccion{
+    text-align: center;
+}
 .form-info{
     width: 100%;
     margin: 0 auto 10px;
@@ -41,13 +41,11 @@
     padding: 5px;
 }
 .registro-cuenta{
-    border: 1px solid violet;
     display: grid;
     justify-content: center;
     margin-top: 30px;
 }
 .aviso{
-    border: 1px solid paleturquoise;
     margin: 0;
     font-family: monospace;
     font-size: 15px;
